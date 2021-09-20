@@ -1,12 +1,15 @@
+
 package com.cj;
+
+import javax.xml.stream.FactoryConfigurationError;
 
 /**
  * @program: data-structure-and-algorithms
- * @description: 数据结构与算法之模拟 JDK List 集合
+ * @description: ArrayList 集合缩容
  * @author: C.J
  * @create: 2021/09/19
  **/
-public class ArrayList<E> extends AbstractList<E> {
+public class ArrayList2<E> extends AbstractList<E> {
 
     /**
      * 存储所有元素的数组
@@ -18,12 +21,12 @@ public class ArrayList<E> extends AbstractList<E> {
      */
     private static final int DEFAULT_CAPACITY = 10;
 
-    public ArrayList(int capacity) {
+    public ArrayList2(int capacity) {
         capacity = Math.max(capacity, DEFAULT_CAPACITY);
         elements = (E[]) new Object[capacity];
     }
 
-    public ArrayList() {
+    public ArrayList2() {
         this(DEFAULT_CAPACITY);
     }
 
@@ -80,7 +83,7 @@ public class ArrayList<E> extends AbstractList<E> {
 
         elements = newElements;
 
-        System.out.println("oldCapacity: " + oldCapacity + " --> newCapacity:" + newCapacity);
+        System.out.println("oldCapacity: " + oldCapacity + " --> newCapacity: " + newCapacity);
     }
 
     @Override
@@ -94,7 +97,26 @@ public class ArrayList<E> extends AbstractList<E> {
 
         elements[--size] = null;
 
+        trim();
+
         return oldValue;
+    }
+
+    private void trim() {
+
+        int oldCapacity = elements.length;
+        int newCapaticy = oldCapacity >> 1;
+        if (size >= newCapaticy || oldCapacity <= DEFAULT_CAPACITY) return;
+
+        E[] newElements = (E[]) new Object[newCapaticy];
+        for (int i = 0; i < size; i++) {
+            newElements[i] = elements[i];
+        }
+
+        elements = newElements;
+
+        System.out.println("oldCapacity: " + oldCapacity + " ---> newCapacity: " + newCapaticy);
+
     }
 
     @Override
