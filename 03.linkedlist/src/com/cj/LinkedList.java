@@ -1,7 +1,5 @@
 package com.cj;
 
-import sun.text.normalizer.CharTrie;
-
 /**
  * @program: data-structure-and-algorithms
  * @description: 数据结构与算法之链表实现
@@ -14,7 +12,10 @@ public class LinkedList<E> extends AbstractList<E> {
      * 元素存储
      */
     private Node<E> first;
-    private Node<E> node;
+
+    public LinkedList() {
+        first = new Node<>(null, null);
+    }
 
     private static class Node<E> {
         E element;
@@ -69,29 +70,18 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
-
-        if (index == 0) {
-            first = new Node<>(element, first);
-        } else {
-            Node<E> prev = node(index - 1);
-            prev.next = new Node<>(element, prev.next);
-        }
-
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        prev.next = new Node<>(element, prev.next);
         size++;
     }
 
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        Node<E> node = first;
-        if (index == 0) {
-            first = first.next;
-        } else {
-            Node<E> prev = node(index - 1);
-            node = prev.next;
-            prev.next = node.next;
-        }
 
+        Node<E> prev = index == 0 ? first : node(index - 1);
+        Node<E> node = prev.next;
+        prev.next = node.next;
         size--;
 
         return node.element;
